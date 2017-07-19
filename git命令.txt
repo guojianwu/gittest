@@ -1,0 +1,42 @@
+
+//初始化远程仓库
+$ git pull --rebase https://github.com/guojianwu/guojianwu.github.io.git master
+
+//添加到远程仓库
+$ git push https://github.com/guojianwu/guojianwu.github.io.git master
+
+
+//为远程仓库起个别名
+git remote add test https://github.com/guojianwu/gittest.git
+
+//初始化远程仓库
+$ git pull --rebase test master
+
+
+//添加到远程仓库
+$ git push test master
+git remote add test https://github.com/guojianwu/gittest.git
+
+查看远程分支
+$ git branch -a  
+
+
+
+查看本地分支
+$ git branch  
+
+
+3 创建分支
+$ git branch test  
+
+
+切换分支到test
+$ git checkout test  
+
+线面是把分支推到远程分支 
+$ git push origin test  
+
+//克隆远程仓库的其中一个分支
+	        分支名     远程仓库
+$ git clone -b test02 https://github.com/guojianwu/gittest.git
+
