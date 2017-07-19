@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    
+    <script src="../js/jquery.min.js"></script>
+</head>
+
+<style>
+    #mian{
+        /*width: 400px;*/
+        /*height: 400px;*/
+        margin: 0 auto;
+       background: gray;
+        position: relative;
+    }
+    #mian .block{
+        /*width: 198px;*/
+        /*height:198px;*/
+        position: absolute;
+       /*/background: red;*/
+        margin-left: 1px;
+        margin-top: 1px;
+        border-radius: 2px;
+    }
+</style>
+
+<body>
+<div id="mian" value="3">
+
+</div>
+
+
+</body>
+
+<script>
+    var mian=document.getElementById('mian');
+
+
+
+    var board=new Array();
+    var num=2;
+    var clientWidth= document.body.clientWidth;
+    var w=clientWidth/num;
+    var h=clientWidth/num;
+    init()
+    function init(){
+
+        $("#mian").css("width",clientWidth);
+        $("#mian").css("height",clientWidth);
+
+        for(var i=0;i<num;i++){
+            board[i]=new Array();
+            for(var j=0;j<num;j++){
+                $("#mian").append($("<p class='block' id='block-"+i+"-"+j+"'></p>"))
+                var block=$("#block-"+i+"-"+j);
+                block.css("top",getPos(i,w));
+                block.css("left",getPos(j,w));
+                block.css("width",w-2)
+                block.css("height",h-2)
+                block.attr("value","1");
+                board[i][j]=0;
+            }
+        }
+
+        var randx=parseInt(Math.floor(Math.random()*num));
+        var randy=parseInt(Math.floor(Math.random()*num));
+
+        board[randx][randy]=1;
+
+        var block=$("#block-"+randx+"-"+randy);
+        block.attr("value","0");
+
+        setColor()
+
+
+    }
+    function setColor(){
+        var rand=parseInt(Math.floor(Math.random()*3));
+        if(rand==0){
+            randColor("#C71585","#CD00CD");
+        }
+        if(rand==1){
+            randColor("#C5C1AA","#BDBDBD");
+        }
+
+        if(rand==2){
+
+            randColor("#CD8500","#CDAD00");
+        }
+    }
+
+    function randColor(color,nucolor){
+        for(var i=0;i<num;i++){
+            for(var j=0;j<num;j++){
+                if(board[i][j]==0){
+                    var block=$("#block-"+i+"-"+j);
+                    block.css("background",color);
+                }else{
+                    var block=$("#block-"+i+"-"+j);
+                    block.css("background",nucolor);
+                }
+            }
+        }
+    }
+
+    function getPos(i,w){
+        return i*w;
+    }
+
+    mian.onclick=function(ev){
+        if(ev.target.value==0){
+            mian.innerHTML='';
+            num++;
+            w=clientWidth/num;
+            h=clientWidth/num;
+            init();
+
+        }else{
+            alert("GAME OVER");
+            mian.innerHTML='';
+            num=2;
+            w=clientWidth/num;
+            h=clientWidth/num;
+            init();
+
+        }
+
+
+
+    }
+
+
+
+</script>
+
+
+</html>
+
+
+
+
+

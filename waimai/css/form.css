@@ -1,0 +1,59 @@
+
+#back{
+    position: fixed;
+    font-size: 0.5rem;
+    border-bottom: 1px solid darkgray;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    background: white;
+}
+#back span{
+    vertical-align: middle;
+}
+#back .back{
+    font-size: 0.75rem;
+    color: grey;
+    padding-right: 0.3rem;
+
+}
+#tijao .list{
+    border-bottom: 1px solid darkgrey;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    padding-left: 0.3rem;
+    font-size: 0;
+}
+#tijao .list span{
+    font-size: 0.35rem;
+    padding-right: 0.3rem;
+}
+#tijao .foodList{
+    border-bottom: 1px solid darkgrey;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    padding-left: 0.3rem;
+    font-size: 0;
+}
+#tijao .foodList span{
+    font-size: 0.35rem;
+    padding-right: 0.3rem;
+    display: inline-block;
+    height: 1.2rem;
+    vertical-align: middle;
+}
+#tijao .foodList .name{
+    width: 60%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#tijao .foodList .count{
+    margin-left: 3%;
+}
+#tijao .foodList .money{
+    float: right;
+    font-size: 0.45rem;
+}

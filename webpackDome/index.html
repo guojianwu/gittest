@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>vue-simple</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./dist/build.js"></script>
+  </body>
+
+
+<script>
+     (function(win,doc){
+
+        var fresh = function() {
+            var html = doc.documentElement;
+            var w = html.clientWidth;
+            if(w<450){
+                html.style.fontSize = (w/10) + 'px';
+                // document.getElementsByTagName('body')[0].height=w+'px';
+            }else {
+                html.style.fontSize = 45 + 'px';
+                document.getElementsByTagName('body')[0].width=450+'px';
+            }
+
+        }
+
+        if(document.readyState === "complete") {
+            fresh();
+        } else {
+            document.addEventListener( "DOMContentLoaded", fresh, false );
+        }
+
+        win.addEventListener('resize' , fresh , false);
+
+    })(window,document);
+
+    
+  </script>
+
+</html>

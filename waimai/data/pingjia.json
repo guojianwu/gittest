@@ -1,0 +1,134 @@
+{
+    "status":1,
+    "result":{
+        "value1":4.9,
+        "value2":4.8,
+        "userInfo":[
+          {
+            "userImg":"images/test.jpg",
+            "userName":"郭建武",
+            "date":"2017.06.13",
+            "score":4.8,
+            "songda":6,
+            "text":"低分和中等分数的界限值，值本身被划分低分和中等分数的界限值，值本身被划分在低分中",
+            "image":true,
+            "images":[
+              {
+                "image1":"images/test.jpg",
+                "image2":"images/test.jpg",
+                "image3":"images/test.jpg",
+                "image4":"images/test.jpg"
+
+              }
+            ]
+          },
+          {
+            "userImg":"images/test.jpg",
+            "userName":"李家劲",
+            "date":"2017.06.12",
+            "score":4.7,
+            "songda":7,
+            "text":"只读时未选中 icon 的类名.icon 的类名数组，共有 3 个元素，为 3 个分段所对应的类名",
+            "image":true,
+            "images":[
+              {
+                "image1":"images/test.jpg",
+                "image2":"images/test.jpg"
+
+              }
+            ]
+          },
+          {
+            "userImg":"images/test.jpg",
+            "userName":"余建兵",
+            "date":"2017.06.11",
+            "score":3.6,
+            "songda":10,
+            "text":"icon 的颜色数组，共有 3 个元素，为 3 个分段所对应的颜色的颜色数组",
+            "image":true,
+            "images":[
+              {
+                "image1":"images/test.jpg"
+
+              }
+            ]
+          },
+          {
+            "userImg":"images/test.jpg",
+            "userName":"吴  扬",
+            "date":"2017.06.11",
+            "score":2.6,
+            "songda":10,
+            "text":"icon 的颜色数组，共有 3 个元素，为 3 个分段所对应的颜色的颜色数组",
+            "image":true,
+            "images":[
+              {
+                "image1":"images/test.jpg",
+                "image2":"images/test.jpg",
+                "image3":"images/test.jpg"
+              }
+            ]
+          },
+          {
+            "userImg":"images/test.jpg",
+            "userName":"韦  强",
+            "date":"2017.06.11",
+            "score":1.6,
+            "songda":10,
+            "text":"icon 的颜色数组，共有 3 个元素，为 3 个分段所对应的颜色的颜色数组",
+            "image":true,
+            "images":[
+              {
+
+              }
+            ]
+          },
+          {
+            "userImg":"images/test.jpg",
+            "userName":"蔡智伟",
+            "date":"2017.06.11",
+            "score":2.6,
+            "songda":10,
+            "text":"icon 的颜色数组，共有 3 个元素，为 3 个分段所对应的颜色的颜色数组",
+            "image":true,
+            "images":[
+              {
+                "image1":"images/test.jpg",
+                "image2":"images/test.jpg"
+              }
+            ]
+          },
+          {
+            "userImg":"images/test.jpg",
+            "userName":"李佩佳",
+            "date":"2017.06.10",
+            "score":4.6,
+            "songda":11,
+            "text":"icon 的颜色数组，共有 3 个元素，为 3 个分段所对应的颜色的颜色数组",
+            "image":true,
+            "images":[
+              {
+                "image1":"images/test.jpg",
+                "image2":"images/test.jpg"
+              }
+            ]
+          },
+          {
+            "userImg":"images/test.jpg",
+            "userName":"陈雅欣",
+            "date":"2017.06.8",
+            "score":3.6,
+            "songda":11,
+            "text":"icon 的颜色数组，共有 3 个元素，为 3 个分段所对应的颜色的颜色数组",
+            "image":true,
+            "images":[
+              {
+                "image1":"images/test.jpg",
+                "image2":"images/test.jpg"
+              }
+            ]
+          }
+        ]
+    }
+
+  }

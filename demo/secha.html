@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bmobSocketIo.js"></script>
+    <script src="js/bmob.js"></script>
+
+</head>
+
+<style>
+    #mian{
+        /*width: 400px;*/
+        /*height: 400px;*/
+        margin: 0 auto;
+       background: gray;
+        position: relative;
+    }
+    #mian .block{
+        /*width: 198px;*/
+        /*height:198px;*/
+        position: absolute;
+       /*/background: red;*/
+        margin-left: 1px;
+        margin-top: 1px;
+        border-radius: 2px;
+    }
+    #mainScore{
+        font-size: 18px;
+        margin-left: 13px;
+    }
+    #mainScore span{
+        font-size: 25px;
+    }
+    #mainSopScore{
+        margin-left: 50%;
+        margin-top: -46px;
+        font-size: 20px;
+    }
+    #mainSopScore span{
+        font-size: 25px;
+    }
+</style>
+
+<body>
+
+<p id="mainScore">当前关数: <span id="score">1</span></p>
+<p id="mainSopScore">历史最高: <span id="topScore"></span></p>
+
+<div id="mian" value="3">
+
+</div>
+
+
+</body>
+
+<script>
+    BmobSocketIo.initialize("342c404c07e9a8fef3b50754bddbe409");
+    Bmob.initialize("342c404c07e9a8fef3b50754bddbe409", "751bb754eb6d39ac716cfd73a0df227a");
+    var mian=document.getElementById('mian');
+    var score=document.getElementById('score');
+    var topScore=document.getElementById('topScore');
+
+    var scoreText=1;
+
+    var selectScore;
+
+    var board=new Array();
+    var num=2;
+    var clientWidth= document.body.clientWidth;
+    var w=clientWidth/num;
+    var h=clientWidth/num;
+    init()
+    function init(){
+
+        $("#mian").css("width",clientWidth);
+        $("#mian").css("height",clientWidth);
+
+        for(var i=0;i<num;i++){
+            board[i]=new Array();
+            for(var j=0;j<num;j++){
+                $("#mian").append($("<p class='block' id='block-"+i+"-"+j+"'></p>"))
+                var block=$("#block-"+i+"-"+j);
+                block.css("top",getPos(i,w));
+                block.css("left",getPos(j,w));
+                block.css("width",w-2)
+                block.css("height",h-2)
+                block.attr("value","1");
+                board[i][j]=0;
+            }
+        }
+
+        var randx=parseInt(Math.floor(Math.random()*num));
+        var randy=parseInt(Math.floor(Math.random()*num));
+
+        board[randx][randy]=1;
+
+        var block=$("#block-"+randx+"-"+randy);
+        block.attr("value","0");
+
+        setColor()
+
+
+    }
+    function setColor(){
+        var rand=parseInt(Math.floor(Math.random()*3));
+        if(rand==0){
+            randColor("#C71585","#CD00CD");
+        }
+        if(rand==1){
+            randColor("#C5C1AA","#BDBDBD");
+        }
+
+        if(rand==2){
+
+            randColor("#CD8500","#CDAD00");
+        }
+    }
+
+    function randColor(color,nucolor){
+        for(var i=0;i<num;i++){
+            for(var j=0;j<num;j++){
+                if(board[i][j]==0){
+                    var block=$("#block-"+i+"-"+j);
+                    block.css("background",color);
+                }else{
+                    var block=$("#block-"+i+"-"+j);
+                    block.css("background",nucolor);
+                }
+            }
+        }
+    }
+
+    function getPos(i,w){
+        return i*w;
+    }
+
+    mian.onclick=function(ev){
+
+
+
+        if(ev.target.value==0){
+            scoreText++;
+            mian.innerHTML='';
+            num++;
+            score.innerHTML=scoreText;
+            w=clientWidth/num;
+            h=clientWidth/num;
+            init();
+            if(scoreText>selectScore){
+                topScore.innerHTML=scoreText;
+                updateScore();
+            }
+
+        }else{
+            alert("GAME OVER");
+            //insertScore();
+            scoreText=1;
+            mian.innerHTML='';
+            score.innerHTML=scoreText;
+            num=2;
+            w=clientWidth/num;
+            h=clientWidth/num;
+            init();
+            selectTopScore();
+        }
+
+
+
+    }
+
+    /*
+  function insertScore(){
+      var Chat = Bmob.Object.extend("score");
+      var chat = new Chat();
+      chat.set("score", $("#score").html());
+      chat.set("topScore", $("#topScore").html());
+      //chat.set("content", $("#content").val());
+      chat.save(null, {
+          success: function(object) {
+              // alert('添加数据成功，返回的objectId是：' + object.id)
+          },
+          error: function(model, error) {
+          }
+      });
+  }
+  */
+
+    function updateScore(){
+        var GameScore = Bmob.Object.extend("score");
+        var query = new Bmob.Query(GameScore);
+        query.get("f7e2757255", {
+            success: function(object) {
+                // The object was retrieved successfully.
+                object.set("topScore", $("#score").html());
+                object.save(null, {
+                    success: function(objectUpdate) {
+                        //alert("create object success, object score:"+objectUpdate.get("score"));
+                    },
+                    error: function(model, error) {
+                       // alert("create object fail");
+                    }
+                });
+            },
+            error: function(object, error) {
+               // alert("query object fail");
+            }
+        });
+    }
+
+
+    function selectTopScore(){
+        var score = Bmob.Object.extend("score");
+        var query = new Bmob.Query(score);
+        query.get("f7e2757255", {
+            success: function(object) {
+                // The object was retrieved successfully.
+                //alert(object.get("score"));
+                selectScore=object.get("topScore");
+                topScore.innerHTML=selectScore;
+                console.log(selectScore);
+
+            },
+            error: function(object, error) {
+                alert("query object fail");
+            }
+        });
+    }
+    selectTopScore();
+
+
+
+</script>
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+

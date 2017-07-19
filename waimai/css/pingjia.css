@@ -1,0 +1,91 @@
+
+#pingjia .gray{
+    height: 0.4rem;
+    background: rgba(211, 211, 211, 0.28);
+    border-top: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
+}
+#pingfen{
+    font-size: 0;
+    background: white;
+
+}
+#pingfen .pingfen_zh{
+    text-align: center;
+    width: 37%;
+    border-right: 1px solid gray;
+    display: inline-block;
+
+}
+#pingfen .pingfen_zh .fen{
+    color: orange;
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+}
+#pingfen .pingfen_zh .zhonghe{
+    font-size: 0.5rem;
+    margin-top: 0.1rem;
+}
+#pingfen .pingfen_zh .haopinglv{
+    font-size: 0.4rem;
+    color: darkgrey;
+    margin-top: 0.1rem;
+    margin-bottom: 0.35rem;
+}
+#pingfen .pingfen_peisong {
+    width: 63%;
+    float: right;
+    padding-left: 2%;
+}
+#pingfen .pingfen_peisong .text{
+    float: left;
+    font-size: 0.4rem
+}
+
+#pingfen .pingfen_peisong .box{
+    margin-top: 0.65rem;
+}
+#pingjia_list .list_li{
+    font-size: 0.45rem;
+    clear: both;
+    border-bottom: 1px solid gray;
+}
+#pingjia_list .list_li .left{
+    width: 20%;
+    text-align: center;
+    float: left;
+}
+#pingjia_list .list_li .left img{
+    width: 1.3rem;
+    border-radius: 50%;
+    padding: 0.3rem 0;
+
+}
+#pingjia_list .list_li .right{
+    width: 80%;
+    float: right;
+    padding: 0.3rem 0;
+}
+#pingjia_list .list_li .right .top .username{
+    font-size: 0.45rem;
+    font-weight: bold;
+}
+#pingjia_list .list_li .right .top .date{
+    float: right;
+    font-size: 0.4rem;
+    padding: 0 0.2rem;
+}
+#pingjia_list .list_li .right .center .wuxing{
+
+    float: left;
+}
+#pingjia_list .list_li .right .center .text{
+
+    font-size: 0.45rem;
+    padding: 0.2rem 0;
+}
+#pingjia_list .list_li .right .center .images img{
+    width: 3rem;
+    margin-left: 0.1rem;
+}
+

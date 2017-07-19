@@ -1,0 +1,323 @@
+
+*{
+    margin: 0rem;
+    padding:0rem;
+    box-sizing: border-box;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color: dimgray;
+}
+.layer{
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.54);
+}
+
+
+#head{
+    width: 100%;
+    height: 1.8rem;
+    font-size: 0.5rem;
+
+}
+#head div{
+    width: 30%;
+    height: 100%;
+    line-height: 100%;
+    float: left;
+    text-align: center;
+
+
+}
+#head img{
+    width: 1.7rem;
+    border-radius: 50%;
+
+}
+
+#head .title{
+    display: inline-block;
+    margin-top: 0.3rem;
+}
+#head .gaozhi{
+    color:  #00d0ff;
+    margin-top: 0.1rem;
+    text-align: left;
+    font-size: 0.2rem;
+    display: inline-block;
+    width:5rem;height: 0.4rem;
+}
+
+#tab{
+    font-size: 0;
+    z-index: 1000;
+}
+#tab span{
+    display: inline-block;
+    width: 33%;
+    height: 1rem;
+    font-size: 0.4rem;
+    text-align: center;
+    line-height: 1rem;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    color: gray;
+}
+.fixed{
+    background: white;
+    position: fixed;
+    top:0;
+    width: 100%;
+}
+#center{
+    overflow: hidden;
+}
+#right ,#left{
+    height: 18rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 1.3rem;
+}
+#left{
+    width: 30%;
+    background: rgb(234, 234, 234);
+    float: left;
+
+}
+
+#left-con ul li{
+    font-size: 0.42rem;
+    text-align: center;
+    height: 1.7rem;
+    line-height: 1.7rem;
+    border-bottom: #cccccc 1px dashed;
+}
+#right{
+    width: 70%;
+    float: right;
+}
+#right-con ul .fenlei{
+    font-size: 0.2rem;
+    line-height: 0.7rem;
+    height: 0.7rem;
+    padding: 0;
+    margin:  0;
+
+}
+
+.list{
+    font-size: 0.45rem;
+}
+.list li {
+    margin: 1% 1%;
+    /*border: 1px solid red;*/
+    height: 3rem;
+}
+.list img{
+    width: 30%;
+    float: left;
+}
+.list li div{
+    width: 70%;
+    float: left;
+    padding-left: 1%;
+}
+.list li{
+    clear: both;
+}
+
+
+
+.list .yuexiao{
+    font-size: 0.4rem;
+    color: grey;
+    margin-top: 1%;
+}
+.list .yuexiao span{
+    padding-right: 7%;
+}
+.list .price{
+    margin-top: 1%;
+    width: 100%;
+    font-size: 0.45rem;
+
+}
+.list .price .price_count{
+    display: inline-block;
+    width: 45%;
+    float: right;
+    text-align: center;
+}
+.list .price .price_count span {
+
+}
+.list .price  .yuan {
+    font-size: 0.5rem;
+    color: #00d0ff;
+}
+.list .price .dec{
+    border: 1px solid rgba(128, 128, 128, 0.73);
+    display: inline-block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    line-height: 0.65rem;
+}
+.list .price .add{
+    border: 1px solid rgba(128, 128, 128, 0.73);
+    display: inline-block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    line-height: 0.65rem;
+    background:  #00d0ff;
+    color: white;
+}
+.list .price .count{
+    width: 0.45rem;
+    border: none;
+    text-align: center;
+    background: white;
+}
+
+#left::-webkit-scrollbar , #right::-webkit-scrollbar, .gouwuche::-webkit-scrollbar{
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+#bottom{
+    width: 100%;
+    height: 1.3rem;
+    background: white;
+    font-size: 0;
+    position: fixed;
+    bottom: 0;
+    line-height: 1.3rem;
+
+}
+#bottom span{
+    font-size: 0.5rem;
+    text-align: center;
+}
+#bottom .mianfei{
+    display: inline-block;
+    width: 65%;
+    font-family: '微软雅黑';
+    color: gray;
+    border-top: 1px solid darkgrey;
+
+}
+#bottom .qusong{
+    display: inline-block;
+    width: 35%;
+    background: orange;
+    color: white;
+    font-family: '微软雅黑';
+
+}
+#che{
+    width: 1.4rem;
+    position: fixed;
+    bottom: 0.2rem;
+    left: 0.5rem;
+    background:  #00d0ff;
+    padding: 0.2rem;
+    border-radius: 50%;
+}
+#count{
+    position: fixed;
+    bottom: 1.1rem;
+    left: 1.3rem;
+    font-size: 0.3rem;
+    background: orange;
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    text-align: center;
+    line-height: 0.55rem;
+    border-radius: 50%;
+    color: white;
+}
+
+
+.gouwuche{
+    height: 9rem;
+    background: white;
+    width: 100%;
+
+}
+.list2{
+    font-size: 0;
+    margin-top: 0.2rem;
+    border-bottom: 1px solid gray;
+    padding: 0.2rem;
+}
+.list2 .text{
+    display: inline-block;
+    width: 70%;
+    height: 0.65rem;
+    font-size: 0.45rem;
+    /*border: 1px solid gray;*/
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.list2 .caozuo{
+    text-align: center;
+    display: inline-block;
+    font-size: 0.45rem;
+    width: 25%;
+    font-size: 0.45rem;
+    float: right;
+}
+
+.list2 .caozuo span {
+    display: inline-block;
+    width: 20%;
+}
+.list2 .caozuo .dec{
+    border: 1px solid rgba(128, 128, 128, 0.73);
+    display: inline-block;
+     width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    line-height: 0.65rem;
+}
+.list2 .caozuo .add {
+    border: 1px solid rgba(128, 128, 128, 0.73);
+    display: inline-block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    line-height: 0.65rem;
+    background:  #00d0ff;
+    color: white;
+}
+ .list2 .caozuo .shuju{
+    border: none;
+     width: 0.5rem;
+     text-align: center;
+     background: white;
+
+}
+
+#tab .active {
+    color: #00CC33;
+}
+#bottom .active{
+    color:  #00d0ff;
+}

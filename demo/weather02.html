@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <script src="js/jquery.min.js"></script>
+</head>
+<style>
+    *{
+        margin: 0px;
+        padding: 0px;
+        /*box-sizing: border-box;*/
+    }
+
+
+    #main{
+        width: 100%;
+        height: 100%;
+    }
+    #city{
+        text-align: center;
+        font-size: 0.7rem;
+        margin-top: 0.4rem;
+        color: gray;
+    }
+    #weather{
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    #wendu {
+        font-size: 2.4rem;
+        /*text-align: center;*/
+        margin-left: 35%;
+        font-weight: bold;
+    }
+    #fenxiang{
+        text-align: center;
+        color: gray;
+        margin-top: 1rem;
+        font-size: 0.3rem;
+    }
+    #direction{
+        margin-right: 0.8rem;
+
+    }
+    #img{
+        margin-left: 0.3rem;
+        margin-top: 0.3rem;
+    }
+    #bottom{
+        width: 100%;
+        position: absolute;
+        bottom: 0.3rem;
+        color: gray;
+    }
+    #night{
+
+        text-align: center;
+        font-size: 0.4rem;
+
+    }
+    #nightweather,  #nightfenxiang{
+        margin-left: 1rem;
+        font-size: 0.3rem;
+    }
+    #nighttemperature{
+        font-size: 1.7rem;
+        margin-left: 0.3rem;
+    }
+
+    #weilai{
+        position: absolute;
+        top: 100%;
+        color: gray;
+    }
+    #weilai #tab{
+        width: 10rem;
+        font-size: 0.5rem;
+    }
+    #weilai img{
+        width: 1rem;
+        margin-top: 0.33rem;
+
+    }
+   #weilai #tab .right{
+        text-align: right;
+    }
+
+   #selectCity{
+       position: absolute;
+       right: 0.2rem;
+       top: 0.4rem;
+       width: 2.3rem;
+       font-size: 0.3rem;
+
+   }
+</style>
+<body>
+<div id="main">
+
+    <select id="selectCity">
+        <option>选择城市</option>
+        <option>汕尾</option>
+        <option>梅州</option>
+        <option>深圳</option>
+        <option>中山</option>
+        <option>广州</option>
+        <option>北京</option>
+        <option>上海</option>
+
+
+    </select>
+
+
+    <p id="city"></p>
+    <p id="img"><img id="pic"/></p>
+    <p id="weather"></p>
+    <p id="wendu"> <span id="temperature"></span>°</p>
+    <p id="fenxiang">
+        风向:<span id="direction"></span>
+        相对湿度:<span id="power"></span>
+    </p>
+
+   <div id="bottom">
+       <p id="night">晚间预报</p>
+
+       <p id="nightweather"><span id="nightweat"></span><span id="nighttemperature"></span>°</p>
+
+       <p id="nightfenxiang"> 风向:<span id="nightdirection"></span></p>
+   </div>
+
+    <div id="weilai">
+        <div>
+            <table  id="tab">
+                <tr>
+                    
+                    <td >今天 <span id="month00"></span> / <span id="day00"></span></td>
+                    <td  class="right"><img id="img00" /> </td>
+                    <td  class="left"><span id="tianqi00"></span></td>
+                    <td  ><span id="max00"></span>～ <span id="min00"></span></td>
+                </tr>
+                <tr>
+
+                    <td>明天 <span id="month01"></span> / <span id="day01"></span></td>
+                    <td class="right"><img id="img01" /> </td>
+                    <td class="left"><span id="tianqi01"></span></td>
+                    <td><span id="max01"></span>～ <span id="min01"></span></td>
+                </tr>
+                <tr>
+
+                    <td>后天 <span id="month02"></span> / <span id="day02"></span></td>
+                    <td class="right"><img id="img02" /> </td>
+                    <td class="left"><span id="tianqi02"></span></td>
+                    <td><span id="max02">29</span>～ <span id="min02"></span></td>
+                </tr>
+                <tr>
+
+                    <td class="text1">大后天 <span id="month03"></span> / <span id="day03"></span></td>
+                    <td class="right"><img id="img03"/> </td>
+                    <td class="left"><span id="tianqi03"></span></td>
+                    <td><span id="max03"></span>～ <span id="min03"></span></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    
+
+
+</div>
+
+</body>
+
+
+<script>
+
+    (function(win,doc){
+
+        var fresh = function() {
+            var html = doc.documentElement;
+            var w = html.clientWidth;
+            html.style.fontSize = (w/10) + 'px';
+        }
+
+        if(document.readyState === "complete") {
+            fresh();
+        } else {
+            document.addEventListener( "DOMContentLoaded", fresh, false );
+        }
+
+        win.addEventListener('resize' , fresh , false);
+
+    })(window,document);
+
+
+    var city='深圳';
+    function formatterDateTime() {
+        var date=new Date()
+        var month=date.getMonth() + 1
+        var datetime = date.getFullYear()
+                + ""// "年"
+                + (month >= 10 ? month : "0"+ month)
+                + ""// "月"
+                + (date.getDate() < 10 ? "0" + date.getDate() : date
+                        .getDate())
+                + ""
+                + (date.getHours() < 10 ? "0" + date.getHours() : date
+                        .getHours())
+                + ""
+                + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
+                        .getMinutes())
+                + ""
+                + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
+                        .getSeconds());
+        return datetime;
+    }
+
+    function init() {
+
+
+        $.ajax({
+            type: 'post',
+            url: 'http://route.showapi.com/9-9',
+            dataType: 'jsonp',
+            data: {
+                "showapi_timestamp": formatterDateTime(), //注意要使用当前时间。服务器只处理时间误差10分钟以内的请求
+                "showapi_appid": '37762', //这里需要改成自己的appid
+                "showapi_sign": 'fbe553dcad964de5a32481dfe3222a51', //这里需要改成自己的密钥
+                "area": city
+                // "showapi_remark":"101230506"
+            },
+            jsonp: 'jsonpcallback',
+            error: function (XmlHttpRequest, textStatus, errorThrown) {
+                alert("操作失败!");
+            },
+            success: function (result) {
+                console.log(result) //console变量在ie低版本下不能用
+                //list=result;
+                //console.log(list.showapi_res_body.dayList[0].day_air_temperature);
+                // alert("返回的图片地址为:"+result.showapi_res_body.img_path)
+                $('#city').html(result.showapi_res_body.area);  //=result.showapi_res_body.area
+                $('#pic').attr('src', result.showapi_res_body.dayList[0].day_weather_pic);
+                $('#weather').html(result.showapi_res_body.dayList[0].day_weather);  //day_air_temperature
+                $('#temperature').html(result.showapi_res_body.dayList[0].day_air_temperature); //day_wind_direction
+                $('#direction').html(result.showapi_res_body.dayList[0].day_wind_direction);
+                var power = result.showapi_res_body.dayList[0].day_wind_power;
+                power = power.substring(7, 10);
+                $('#power').html(power);
+                $('#nightweat').html(result.showapi_res_body.dayList[0].night_weather);
+                $('#nighttemperature').html(result.showapi_res_body.dayList[0].night_air_temperature);
+                $('#nightdirection').html(result.showapi_res_body.dayList[0].night_wind_direction);
+                //night_wind_direction
+
+                console.log(result.showapi_res_body.dayList[0].daytime.substring(6, 8));
+
+                for (var i = 0; i < 4; i++) {
+                    $('#month0' + i).html(result.showapi_res_body.dayList[i].daytime.substring(4, 6));    //daytime
+                    $('#day0' + i).html(result.showapi_res_body.dayList[i].daytime.substring(6, 8));    //daytime
+                    $('#img0' + i).attr('src', result.showapi_res_body.dayList[i].day_weather_pic);    //day_weather_pic
+                    $('#tianqi0' + i).html(result.showapi_res_body.dayList[i].day_weather);    //day_weather_pic
+                    $('#max0' + i).html(result.showapi_res_body.dayList[i].day_air_temperature);    //day_weather_pic
+                    $('#min0' + i).html(result.showapi_res_body.dayList[i].night_air_temperature);    //day_weather_pic
+                }
+
+
+            }
+
+
+        });
+
+    }
+
+    init();
+
+    var selectCity=document.getElementById('selectCity');
+    selectCity.onchange=function(){
+        ;
+        var grade = selectCity.options[selectCity.selectedIndex].innerHTML;
+
+        if(grade=='选择城市'){
+            return
+        }else{
+            city=grade;
+            init();
+        }
+
+    }
+
+
+</script>
+
+</html>

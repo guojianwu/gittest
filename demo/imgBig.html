@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{
+        /*margin: 0px;*/
+        /*padding: 0px;*/
+    }
+    #small{
+        width: 450px;
+        height: 450px;
+        border: 1px #cccccc solid;
+        background-image: url("images/f1.jpg");
+        float: left;
+        position: relative;
+    }
+    #mask{
+        width: 200px;
+        height: 200px;
+        background-color: yellow;
+        opacity: 0.5;
+        position: absolute;
+        left: 0px;
+        top:0px;
+        display: none;
+    }
+    #big{
+        width: 550px;
+        height: 550px;
+        border: 1px #cccccc solid;
+        float: left;
+        overflow: hidden;
+        display: none;
+
+    }
+
+</style>
+<body>
+
+<!--<div id="main">-->
+    <div id="small">
+        <div id="mask"></div>
+    </div>
+    <div id="big">
+        <img src="images/f3.jpg" alt="">
+    </div>
+<!--</div>-->
+
+
+<script>
+    function $(aDom){
+        var dom=document.getElementById(aDom);
+        return dom;
+    }
+
+    var oSmall=$("small");
+    var oMask=$("mask");
+    var oBig=$("big");
+
+    oSmall.onmousemove=function(event){
+        //event  系统事件对象
+        //event.clientX  鼠标在屏幕的位置
+       // console.log(event.clientX)
+
+        var left= event.clientX - oMask.offsetWidth/2-8;
+        var top= event.clientY - oMask.offsetHeight/2-8;
+
+        oMask.style.display="block";
+
+        var minLeft=0;
+        var maxLeft=oSmall.offsetWidth - oMask.offsetWidth;
+
+        var minTop=0;
+        var maxTop=oSmall.offsetHeight - oMask.offsetHeight;
+
+        if(left<=minLeft){
+            left=minLeft;
+        }
+        if(left>=maxLeft){
+            left=maxLeft;
+        }
+
+        if(top<=minTop){
+            top=minTop;
+        }
+        if(top>=maxTop){
+            top=maxTop;
+        }
+
+        oMask.style.left=left+'px';
+        oMask.style.top=top+'px';
+
+
+        oBig.scrollLeft=left;
+        oBig.scrollTop=top;
+
+    }
+
+    oSmall.onmouseover=function(){
+        oMask.style.display="block";
+        oBig.style.display="block";
+    }
+
+    oSmall.onmouseout=function(){
+        //oMask.style.left=0+'px';
+       // oMask.style.top=0+'px';
+
+        //oBig.scrollLeft=0;
+       // oBig.scrollTop=0;
+        oMask.style.display="none";
+        oBig.style.display="none";
+        
+        
+        
+//        //大图运动
+//        var l=(oBigImg.offsetWidth - oBig.offsetWidth)*(oMask.offsetLeft)/(maxLeft);
+//        oBig.scrollLeft=l;
+//
+//        var v=(oBigImg.offsetHeight - oBig.offsetHeight)*(oMask.offsetTop)/(maxTop);
+//        oBig.scrollTop=v;
+
+
+    }
+
+
+</script>
+
+</body>
+</html>

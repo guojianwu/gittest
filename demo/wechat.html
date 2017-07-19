@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+</head>
+<script src="js/vue.js"></script>
+<style>
+    *{
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+    }
+    body{
+        width: 100%;
+        height: 100%;
+    }
+    #app{
+        /*position: relative;*/
+        width: 100%;
+        height: 100%;
+    }
+    #top{
+        width: 100%;
+        height: 1.4rem;
+        background: black;
+        color: white;
+        font-size: 0.5rem;
+        line-height: 1.4rem;
+        position: fixed;
+        top:0;
+    }
+    #top p{
+        margin-left: 0.3rem;
+    }
+
+    #center{
+        margin-top: 1.5rem;
+        margin-bottom: 1.4rem;
+        /*border: 1px solid red;*/
+    }
+    #center div{
+
+        /*border: 1px solid blue;*/
+
+
+    }
+
+    .msg{
+        width: 100%;
+        margin: 0 5px 1px;
+        border-bottom: 1px grey solid;
+        font-size: 0.43rem;
+        padding: 0.3rem;
+
+    }
+    .msg .sub-title{
+        margin-top: 0.24rem;
+        font-size: 0.33rem;
+    }
+
+
+
+    #bottom{
+        height: 1.4rem;
+        width: 100%;
+        border-top: 1px solid grey;
+        position: fixed;
+        bottom: 0px;
+        font-size: 0;
+        background: white;
+
+    }
+    #bottom div{
+        width: 25%;
+        display: inline-block;
+        font-size: 0.35rem;
+        /*border: 1px solid blue;*/
+        height: 100%;
+        text-align: center;
+        line-height: 1.4rem;
+    }
+
+    .active{
+        color: #00CC33;
+    }
+
+
+
+</style>
+<body>
+
+<div id="app">
+    <div id="top">
+       <p>微信</p>
+    </div>
+
+    <div id="center">
+        <div id="wx" v-show="num==0">
+            <!--<div class="msg">-->
+            <!--<p class="title">Soibnm</p>-->
+            <!--<p class="sub-title">今天又没有时间</p>-->
+            <!--</div>-->
+            <message v-for="message in messages" :user="message.name" :msg="message.msg"></message>
+
+
+
+        </div>
+        <div id="txl" v-show="num==1">
+
+            <message v-for="message in messages" :user="message.name" ></message>
+
+
+        </div>
+        <div id="fx" v-show="num==2">发现</div>
+        <div id="w" v-show="num==3">我</div>
+
+
+
+    </div>
+
+    <div id="bottom">
+        <div @click="num=0">
+            <span :class="num==0?'active':''"> 微信</span>
+        </div>
+        <div @click="num=1">
+            <span :class="num==1?'active':''"> 通信录</span>
+        </div>
+        <div @click="num=2">
+            <span :class="num==2?'active':''"> 发现</span>
+        </div>
+        <div @click="num=3">
+            <span :class="num==3?'active':''"> 我</span>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+</body>
+<script>
+
+
+
+
+    (function(win,doc){
+        var fresh = function() {
+            var html = doc.documentElement;
+            var w = html.clientWidth;
+
+
+            html.style.fontSize = (w/10) + 'px';
+            //console.log(html.style.fontSize);
+        }
+        if(document.readyState === "complete") {
+            fresh();
+        } else {
+            document.addEventListener( "DOMContentLoaded", fresh, false );
+        }
+        win.addEventListener('resize' , fresh , false);
+    })(window,document);
+
+
+    Vue.component('message',{
+        template:' <div class="msg">\
+                         <p class="title">{{user}}</p>\
+                         <p class="sub-title">{{msg}}</p>\
+                   </div>',
+        props:{
+            user:{
+                type:String,
+                required:false,
+                default:'微信团队'
+            },
+            msg:{
+                type:String,
+//                required:true
+            }
+        }
+    })
+
+
+
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            num:0,
+            messages:[
+                {
+                    name:'gjw',
+                    msg:'你好,惊天有时间么?'
+                },
+                {
+                    name:'yjb',
+                    msg:'有进步,惊天有时间么?'
+                },
+                {
+                    name:'离家近',
+                    msg:'李锦记,惊天有时间么?'
+                },
+                {
+                    msg:'李锦记,惊天有时间么?'
+                },
+                {
+                    name:'gjw',
+                    msg:'你好,惊天有时间么?'
+                },
+                {
+                    name:'yjb',
+                    msg:'有进步,惊天有时间么?'
+                },
+                {
+                    name:'离家近',
+                    msg:'李锦记,惊天有时间么?'
+                },
+                {
+                    msg:'李锦记,惊天有时间么?'
+                },
+                {
+                    name:'gjw',
+                    msg:'你好,惊天有时间么?'
+                },
+                {
+                    name:'yjb',
+                    msg:'有进步,惊天有时间么?'
+                },
+                {
+                    name:'离家近',
+                    msg:'李锦记,惊天有时间么?'
+                },
+                {
+                    msg:'李锦记,惊天有时间么?'
+                },
+                {
+                    name:'gjw',
+                    msg:'你好,惊天有时间么?'
+                },
+                {
+                    name:'yjb',
+                    msg:'有进步,惊天有时间么?'
+                },
+                {
+                    name:'离家近',
+                    msg:'李锦记,惊天有时间么?'
+                },
+                {
+                    msg:'李锦记,惊天有时间么?'
+                }
+            ]
+        }
+
+    })
+
+
+</script>
+</html>

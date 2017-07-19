@@ -1,0 +1,28 @@
+
+#xuanqing .xuanqing_list{
+    background: rgba(234, 234, 234, 0.52);
+    margin-top: 0.2rem;
+    vertical-align:middle;
+    color: gray;
+}
+
+#xuanqing .xuanqing_list img{
+    width: 0.8rem;
+    vertical-align:middle;
+    margin-left: 0.3rem;
+}
+#xuanqing .xuanqing_list span{
+    font-size: 0.4rem;
+    vertical-align:middle;
+    margin-left: 0.3rem;
+}
+#xuanqing .xuanqing_list .dayuhao{
+    display: inline-block;
+    font-size: 0.6rem;
+    color: gray;
+    float: right;
+    vertical-align:middle;
+
+    margin: 3% 0.3rem;
+
+}

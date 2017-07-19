@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>603外卖</title>
+    <script src="js/vue.min.js"></script>
+    <script src="js/vue-resource.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <link rel="stylesheet" href="css/dingcan.css">
+    <link rel="stylesheet" href="css/xuanqing.css">
+    <link rel="stylesheet" href="css/pingjia.css">
+    <link rel="stylesheet" href="css/gaiElement.css">
+    <link rel="stylesheet" href="css/form.css">
+
+
+
+</head>
+    <body>
+        <div  id="app">
+            <!--头部-->
+            <div id="head" v-show="!showform">
+                 <div>
+                     <img src="images/test.jpg" alt="">
+                 </div>
+                 <span class="title">603外卖</span><br>
+                <div class="gaozhi">告知:只送火炬职院宿舍楼下</div>
+            </div>
+
+            <!--导航栏-->
+            <div id="tab" :class="setClass"  v-show="!showform">
+
+                <span @click="num=0" :class="num==0?'active':''">订餐</span>
+                <span @click="num=1"  :class="num==1?'active':''">评价</span>
+                <span @click="num=2"  :class="num==2?'active':''">详情</span>
+            </div>
+
+            <!--订餐-->
+            <div v-show="num==0">
+                <div id="center"  v-show="!showform">
+
+                   <!--左边产品分类-->
+                    <div id="left">
+                        <div id="left-con">
+                            <ul>
+                                <li v-for="type in diancan">
+                                    <a :href="type[0].setHref">{{type[0].foodType}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!--右边产品列表-->
+                    <div id="right">
+                        <div id="right-con">
+                             <ul>
+                            <li class="fenlei"  v-for="(type,index) in diancan" id="rexiao">
+                                <ul class="list">
+                                    <li style=" background: rgb(234, 234, 234)" class="fenlei" :id="type[0].setId">{{type[0].foodType}}</li>
+                                    <li  style=""  v-for="item in type[0].list">
+                                        <img src="images/test.jpg" alt="">
+                                        <div>
+                                            <span  v-text="item.foodName"></span>
+                                            <div class="yuexiao">
+                                                月销 <span  v-text="item.monthCount"></span>
+                                                赞 <span>{{item.zanCount}}</span>
+                                            </div>
+                                            <div class="price">
+                                                <span class="yuan" >{{item.foodPrice |formatMoney}}</span>
+                                                <span class="price_count">
+                                                     <span class="dec" v-show="item.maiCount!=0"  @click="chageMoney(item,0)">-</span>
+                                                    <input type="text"  v-show="item.maiCount!=0" disabled class="count" v-model="item.maiCount">
+                                                     <span class="add" @click="chageMoney(item,1)">+</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                          </ul>
+                        </div>
+                    </div>
+                 </div>
+
+                <!--底部固定购物车和结算-->
+                 <div id="bottom">
+                    <span class="mianfei" v-text="peiSong" :class="zongJia==0?'':'active'"></span>
+                    <span class="qusong" v-text="jiesuan" @click="form()"></span>
+
+                 </div>
+                 <img src="images/gouwuche.png" alt="" id="che"  @click="alert()"  v-show="!showform">
+                 <span id="count" v-show="zhonCount!=0 && !showform" >{{zhonCount}}</span>
+           </div>
+
+            <!--评价-->
+            <div v-show="num==1"  v-show="!showform">
+                <div id="pingjia">
+                  <div class="gray"></div>
+                  <div id="pingfen">
+                      <div class="pingfen_zh">
+                         <div class="fen">{{(value1+value2)/2 |pingfen}}</div>
+                         <div class="zhonghe">综合评分</div>
+                         <div class="haopinglv">商家好评率{{(value1+value2)*10 |pingfen}}%</div>
+                      </div>
+                      <div class="pingfen_peisong">
+                          <div class="box">
+                              <div  class="text">配送评分：</div>
+                              <div class="wuxing">
+                                  <el-rate v-model="value1" disabled  text-color="#ff9900" text-template="{value}">
+                                  </el-rate>
+                              </div>
+                          </div>
+                          <div class="box">
+                              <div  class="text">商家评分：</div>
+                              <div class="wuxing">
+                                  <el-rate v-model="value2" disabled text-color="#ff9900" text-template="{value}">
+                                  </el-rate>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                    <div class="gray"></div>
+                    <div id="pingjia_list">
+                        <ul>
+                            <li class="list_li" v-for="pj in pingjia">
+                                <div class="left">
+                                    <img :src="pj.userImg" alt="" class="userImg">
+                                </div>
+                                <div class="right">
+                                    <div class="top">
+                                        <span class="username">{{pj.userName}}</span>
+                                        <span class="date">{{pj.date}}</span>
+                                    </div>
+                                    <div class="center">
+                                        <div class="wuxing">
+                                            <el-rate v-model="pj.score" disabled text-color="#ff9900" text-template="{value}">
+                                            </el-rate>
+                                        </div>
+                                        <span>{{pj.songda}}<span>分钟送达</span></span>
+                                        <div class="text">{{pj.text}}</div>
+                                        <div class="images">
+
+                                                 <img v-for="image in pj.images[0]" :src="image" alt="">
+
+
+                                            <!--<img src="images/test.jpg" alt="">-->
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </li>
+                        </ul>
+                        
+                    </div>
+                    
+
+                </div>
+
+            </div>
+
+
+            <!--详情-->
+            <div  v-show="num==2" v-show="!showform">
+                <div id="xuanqing">
+                    <div class="xuanqing_list">
+                        <img src="images/dianhua.png" alt="">
+                        <span>{{xuanqing.tell}}</span>
+                        <!--<span class="dayuhao"> &gt; </span>-->
+                    </div>
+                    <div class="xuanqing_list">
+                        <img src="images/dingwei.png" alt=""  style="width: 0.6rem">
+                        <span>{{xuanqing.local}}</span>
+                        <!--<span class="dayuhao"> &gt; </span>-->
+                    </div>
+                    <div class="xuanqing_list">
+                        <img src="images/jishi.png" alt="" style="width: 0.5rem">
+                        <span>配送时间:
+                            <span>{{xuanqing.time}}</span>
+                        </span>
+                    </div>
+                    <div class="xuanqing_list">
+                        <img src="images/peisong.png" alt="" style="width: 0.5rem">
+                        <span>配送方式:
+                            <span>{{xuanqing.method}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <!--购物车-->
+
+            <div id="dialog_gouwuche">
+                <el-dialog title="购物车" :visible.sync="dialogTableVisible">
+
+                    <div style="padding: 0;margin: 0;list-style: none;overflow: scroll" class="gouwuche" >
+
+                        <div>
+                            <div  v-for="type in diancan">
+                                <div class="list2" v-for="item in type[0].list" v-show="item.maiCount!=0">
+                                    <span class="text">{{item.foodName}}</span>
+                                <span class="caozuo">
+                                    <span class="dec" @click="chageMoney(item,0)">-</span>
+                                    <input type="text" class="shuju" v-model="item.maiCount" disabled>
+                                    <span class="add"  @click="chageMoney(item,1)">+</span>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </el-dialog>
+            </div>
+
+
+
+
+            <!--提交订单-->
+            <div   v-show="showform">
+                <div id="tijao" >
+                    <div id="back">
+                        <span class="back" @click="back()">&lt;</span> <span>提交订单</span>
+                    </div>
+                    <div style="background: rgba(220, 220, 220, 0.47);height: 0.4rem;margin-top: 1.4rem"></div>
+                    <div class="list">
+                        <span>郭建武</span>
+                        <span>先生</span>
+                        <span>13588888603</span>
+                    </div>
+                    <div class="list">
+                        <span>中山火炬职业技术学院</span>
+                        <span>3栋603</span>
+                    </div>
+                    <div class="list">
+                        <span>送达时间</span>
+                        <span style="color: #00CC33">立即送出(大约{{nowTime}}送达)</span>
+                    </div>
+                    <div style="background: rgba(220, 220, 220, 0.47);height: 0.4rem;"></div>
+                    <div v-for="type in diancan">
+                        <div class="foodList"  v-for="item in type[0].list" v-show="item.maiCount!=0">
+                            <span class="name">{{item.foodName}}</span>
+                            <span class="count">×{{item.maiCount}}</span>
+                            <span class="money">{{item.maiCount*item.foodPrice |formatMoney }}</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!--确认支付弹框-->
+            <div id="dialog_form">
+                <el-dialog title="提示" :visible.sync="dialogVisible" size="tiny" >
+                    <span>确认支付{{zongJia}}元</span>
+                 <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="dialogVisible = false">
+                        <span :plain="true" @click="open6">确 定</span>
+                    </el-button>
+                </span>
+                </el-dialog>
+            </div>
+
+
+
+
+    </div>
+</body>
+<script>
+    (function(win,doc){
+
+        var fresh = function() {
+            var html = doc.documentElement;
+            var w = html.clientWidth;
+            if(w<450){
+               html.style.fontSize = (w/10) + 'px';
+                document.getElementsByTagName('body')[0].width=(w/10)+'px';
+            }else {
+                html.style.fontSize = 45 + 'px';
+                document.getElementsByTagName('body')[0].width=50+'px';
+            }
+             
+        }
+
+        if(document.readyState === "complete") {
+            fresh();
+        } else {
+            document.addEventListener( "DOMContentLoaded", fresh, false );
+        }
+
+        win.addEventListener('resize' , fresh , false);
+
+    })(window,document);
+
+
+    var tab=document.getElementById('tab');
+    var head=document.getElementById('head');
+
+    window.onscroll=function(ev){
+        if(ev.path[1].pageYOffset>=document.getElementById('head').offsetHeight){
+            vm.setClass='fixed'
+        }else {
+            vm.setClass=''
+
+        }
+    }
+
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            diancan:[],
+            zhonCount:0,
+            jiesuan:'15元起送',
+            zongJia:0,
+            peiSong:'免费配送',
+            setClass:'',
+            num:0,
+            value1: 0,
+            value2: 0,
+            pingjia:[],
+            xuanqing:[],
+            dialogTableVisible: false,
+            dialogVisible: false,
+            temp:0,
+            checked:0,
+            showform:false,
+            nowTime:''
+        },
+        filters:{
+            formatMoney:function(value){
+                return "￥"+value.toFixed(1);
+            },
+            pingfen:function(value){
+                return value.toFixed(1);
+            }
+        },
+        mounted:function(){
+            var _this=this;
+            this.$nextTick(function () {
+                vm.show();
+            })
+        },
+        methods:{
+            show(){
+                var _this=this;
+                this.$http.get('data/pingjia.json').then(function(res){
+                    _this.value1=res.data.result.value1;
+                    _this.value2=res.data.result.value2;
+                    _this.pingjia=res.data.result.userInfo;
+
+                });
+                this.$http.get('data/xuanqing.json').then(function(res){
+                    _this.xuanqing=res.data.result;
+                });
+                this.$http.get('data/diancan.json').then(function(res){
+                    _this.diancan=res.data.result;
+                });
+
+                //送达时间
+                this.nowTime=new Date().getHours()+':'+(new Date().getMinutes()+15);
+
+
+
+            },
+            chageMoney(item,way){
+                if(way==1){
+                    item.maiCount++;
+                    this.zhonCount++;
+                    this.zongJia+=item.foodPrice;
+
+                }else {
+                    item.maiCount--;
+                    this.zhonCount--;
+                    this.zongJia-=item.foodPrice;
+                    if(item.maiCount<=0){
+                        item.maiCount=0;
+                    }
+                }
+
+                this.peiSong='总价:'+this.zongJia+'元';
+
+                if(this.zongJia==0){
+                    this.peiSong='免费配送';
+                }
+
+                if(this.zongJia>=15){
+                    this.jiesuan='去结算';
+                }else {
+                    this.jiesuan='15元起送';
+                }
+                if(this.zhonCount==0){
+                    this.dialogTableVisible = false;
+                }
+
+            },
+            alert(){
+                if(this.zhonCount==0){
+                    return;
+                }
+                this.dialogTableVisible = true;
+
+            },
+            form(){    //点击结算
+                if(this.zongJia<15)return
+                this.showform=true;
+                this.jiesuan='提交订单';
+
+                this.temp++;
+                if(this.temp>=2){
+                    this.dialogVisible=true;
+                }
+
+            },
+            back(){
+                this.showform=!this.showform;
+                this.temp=0;
+                if(this.showform){
+                    this.jiesuan='提交订单';
+                }else if(!this.showform && this.zongJia>=15){
+                    this.jiesuan='去结算';
+                }else if(!this.showform && this.zongJia<15){
+                    this.jiesuan='15元起送';
+                }
+            },
+            open6() {
+                var _this=this;
+                this.$message({
+                    showClose: true,
+                    message: '恭喜你，支付成功',
+                    type: 'success',
+                    onClose(){
+                        _this.initMaiCount( _this.diancan.rexiao[0].list);
+                        _this.initMaiCount( _this.diancan.banjia[0].list);
+                        _this.initMaiCount( _this.diancan.fushi[0].list);
+                        _this.initMaiCount( _this.diancan.xiaochi[0].list);
+                        _this.initMaiCount( _this.diancan.yinliao[0].list);
+                        _this.initMaiCount( _this.diancan.zhushi[0].list);
+                        _this.initMaiCount( _this.diancan.zhekou[0].list);
+                        _this.zongJia=0;
+                        _this.zhonCount=0;
+                        _this.peiSong='免费配送';
+                        _this.back();
+
+                    }
+
+                });
+
+            },
+            initMaiCount(arr){
+                arr.forEach(function(value){
+                    value.maiCount=0;
+                })
+            }
+
+        }
+
+    })
+</script>
+</html>
