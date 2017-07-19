@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>blog</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <link href="/css/navbar-static-top.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <!--<link rel="stylesheet" href="/css/element-ui.css">-->
+</head>
+<style>
+    .jumbotron h3, .jumbotron .avatar-uploader {
+        /*font-size: 18px;*/
+        margin-top: -17px;
+    }
+    .jumbotron p{
+        font-size: 15px;
+    }
+    .jumbotron .wenzhuang{
+        height: 66px;
+        text-overflow:ellipsis;
+        overflow:hidden;
+    }
+
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #20a0ff;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 120px;
+        height: 120px;
+        line-height: 120px;
+        text-align: center;
+    }
+    .avatar {
+        width: 120px;
+        height: 120px;
+        display: block;
+    }
+    input[type=file]{
+         display: none;
+    }
+    .btn-danger .el-button{
+        padding: 0;
+        /*height: 40px;*/
+    }
+</style>
+<body>
+<div id="app">
+
+
+<nav class="navbar navbar-default navbar-static-top"  style="position: fixed;left: 0;top: 0;width: 100%;">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">全部博客</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">JavaSript</a></li>
+                <li><a href="#about">HTML</a></li>
+                <li><a href="#contact">nodejs</a></li>
+                <li><a href="#contact">vuejs</a></li>
+                <li><a href="#contact">其他</a></li>
+
+            </ul>
+            <% if(!sessionLogin){ %>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/login">登录</a></li>
+                    <li><a href="/regist">注册 <span class="sr-only">(current)</span></a></li>
+                </ul>
+            <%}else{%>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="#"> <span style="padding:0 3px;color: #5cb85c;font-size: 18px"><%=sessionUsername%></span>的个人中心</a></li>
+                    <li><a href="/outlogin">退出 <span class="sr-only">(current)</span></a></li>
+                </ul>
+            <%}%>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div  class="container" style="margin-top: 60px">
+    <div class="jumbotron">
+        <el-upload
+                class="avatar-uploader"
+                action="/posttouxiang"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+
+        <p style="width: 125px;text-align: center;font-size: 22px ;margin-top: 10px;"><%=sessionUsername%></p>
+        <p style="width: 125px;text-align: center;font-size: 22px"><a class="btn btn-success" href="/fabiaowenzhnag" role="button">发表文章</a></p>
+    </div>
+</div>
+
+
+<div class="container">
+
+
+    <div class="jumbotron" v-for="wenzhang in userwenzhnaglist">
+        <h3>{{wenzhang.title}}</h3>
+        <p>作者:<span style="margin-right: 15px;">{{wenzhang.zuozhe}}</span> 时间: <span>{{wenzhang.datetime}}</span> </p>
+        <p class="wenzhuang">{{wenzhang.content}}</p>
+        <p>赞:<span style="margin-right: 15px;">{{wenzhang.zan}}</span>评论: <span>{{wenzhang.comm.length}}</span> </p>
+        <p>
+            <a class="btn btn-default btn-lm" :href="dianjichakan+wenzhang._id" role="button">点击查看</a>
+            <a class="btn btn-danger" href="javascript:;" role="button" style="margin-left: 10px;">
+                <el-button type="text" @click="open2(wenzhang._id)">点击删除</el-button>
+
+            </a>
+        </p>
+    </div>
+    <!--wenzhangxuanqing?id=595f936a180c7986fcf8c3f9-->
+</div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!--<script src="/js/element-iu.js"></script>-->
+<script>
+    var vm =new Vue({
+        el:'#app',
+        data:{
+            imageUrl: `/touxiang/<%=sessionUsername%>.jpg`,
+            qianzui:'/touxiang/',
+            username:`<%=sessionUsername%>`,
+            houzui:'.jpg',
+            userwenzhnaglist:[],
+            dianjichakan:'wenzhangxuanqing?id='
+        }, mounted: function () {
+            var _this=this;
+            this.$nextTick(function () {
+                _this.getuserwenzhangbyusername();
+            })
+        },
+        methods: {
+            getuserwenzhangbyusername(){
+                var _this=this;
+                axios.get('/getuserwenzhangbyusername?username='+this.username).then(function(result){
+                    //_this.wenzhanglist=result.data;
+                    _this.userwenzhnaglist=result.data;
+                   // console.log( _this.userwenzhnaglist)
+                })
+            },
+            open2(id) {
+                var _this=this;
+                    this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(function()  {
+                        //console.log(id)
+                        axios.get('/deletewenzhangbyuid?id='+id).then(function(result){
+                            if(result.data.code==-1){
+                                _this.$message({
+                                    type: 'info',
+                                    message: '删除失败!'
+                                });
+                                return;
+                            }
+                            if(result.data.code==1){
+                                _this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                            }
+                            _this.getuserwenzhangbyusername();
+
+                        })
+
+                    }).catch(function()  {
+                        _this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+            },
+
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            }
+        }
+    })
+</script>
+</html>

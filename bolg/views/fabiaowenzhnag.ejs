@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>blog</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <link href="/css/navbar-static-top.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">-->
+</head>
+<style>
+    .jumbotron h3, .jumbotron .avatar-uploader {
+        /*font-size: 18px;*/
+        margin-top: -17px;
+    }
+    .jumbotron p{
+        font-size: 15px;
+    }
+    .jumbotron .wenzhuang{
+        height: 66px;
+        text-overflow:ellipsis;
+        overflow:hidden;
+    }
+
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #20a0ff;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 120px;
+        height: 120px;
+        line-height: 120px;
+        text-align: center;
+    }
+    .avatar {
+        width: 120px;
+        height: 120px;
+        display: block;
+    }
+    input[type=file]{
+         display: none;
+    }
+</style>
+<body>
+<div id="app">
+
+
+    <nav class="navbar navbar-default navbar-static-top"  style="position: fixed;left: 0;top: 0;width: 100%;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">全部博客</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">JavaSript</a></li>
+                    <li><a href="#about">HTML</a></li>
+                    <li><a href="#contact">nodejs</a></li>
+                    <li><a href="#contact">vuejs</a></li>
+                    <li><a href="#contact">其他</a></li>
+                </ul>
+                <% if(!sessionLogin){ %>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/login">登录</a></li>
+                        <li><a href="/regist">注册 <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                <%}else{%>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="/usercenter"> <span style="padding:0 3px;color: #5cb85c;font-size: 18px"><%=sessionUsername%></span>的个人中心</a></li>
+                        <li><a href="/outlogin">退出 <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                <%}%>
+
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 60px">
+        <div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">文章类型</label>
+                <select class="form-control"  v-model="leixing" @click="fadeInfo">
+                    <option>JavaSript</option>
+                    <option>HTML</option>
+                    <option>nodejs</option>
+                    <option>vuejs</option>
+                    <option>其他</option>
+                </select>
+                <label for="exampleInputEmail1" style="margin-top: 13px;">文章标题</label>
+                <input type="email" @click="fadeInfo" v-model="title" class="form-control" id="exampleInputEmail1" placeholder="文章标题">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">文章内容</label>
+                <textarea class="form-control" @click="fadeInfo" v-model="content" rows="10" placeholder="文章内容"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default" @click="fabiaowenzhang">发表文章</button>
+            <div class="alert alert-warning xiugai text-center" v-show="isShowInfo" role="alert">{{infoMsg}}</div>
+
+        </div>
+
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+<script>
+    var vm =new Vue({
+        el:'#app',
+        data:{
+            leixing:'',
+            title:'',
+            content:'',
+            zuozhe:`<%=sessionUsername%>`,
+            isShowInfo:false,
+            infoMsg:''
+        },
+        methods: {
+            fadeInfo(){
+                this.isShowInfo=false;
+            },
+            fabiaowenzhang(){
+                var _this =this;
+                if(this.leixing==''||this.title==''|| this.content==''){
+                    this.isShowInfo=true;
+                    this.infoMsg='请填写文章信息';
+                    return;
+                }
+
+                axios.post('/postfabiaowenzhang', {
+                    leixing: this.leixing,
+                    title: this.title,
+                    content: this.content,
+                    zuozhe: this.zuozhe
+                }).then(function (result) {
+                    //console.log(result);
+                    if (result.data.code == -3) {
+                        _this.isShowInfo = true;
+                        _this.infoMsg = result.data.msg;
+                        return;
+                    }
+                    if (result.data.code == 1) {
+                        _this.leixing='';
+                        _this.title='';
+                        _this.content='';
+                        _this.isShowInfo = true;
+                        _this.infoMsg = result.data.msg;
+                        return;
+                    }
+
+
+                })
+            } //1
+        }
+    })
+</script>
+</html>

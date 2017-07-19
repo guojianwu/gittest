@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>blog</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <link href="/css/navbar-static-top.css" rel="stylesheet">
+</head>
+<style>
+    .jumbotron h3 {
+        /*font-size: 18px;*/
+        margin-top: -15px;
+    }
+    .jumbotron p{
+        font-size: 15px;
+    }
+    /*.jumbotron .wenzhuang{*/
+        /*height: 66px;*/
+        /*text-overflow:ellipsis;*/
+        /*overflow:hidden;*/
+
+    /*}*/
+    /*.jumbotron .title{*/
+        /*text-overflow:ellipsis;*/
+        /*overflow:hidden;*/
+        /*white-space: nowrap;*/
+    /*}*/
+    .checkStyle{
+       background-color: #e7e7e7;
+    }
+    .jumbotron .pingluntouxiang{
+        width: 65px;
+        height: 85px;
+        float: left;
+    }
+    .jumbotron .pingluntouxiang img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    .jumbotron .pingluncontent{
+        margin-top: 33px;
+    }
+    .jumbotron .pingluncontent h4{
+        padding-top: 5px;
+
+    }
+    .jumbotron .pingluncontent p {
+        margin-top: -5px;
+        font-size: 13px;
+    }
+</style>
+<body>
+<div id="app">
+
+<nav class="navbar navbar-default navbar-static-top" style="position: fixed;left: 0;top: 0;width: 100%;">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/" @click="changetype(0,'quanbu')" :class="check==0?'checkStyle':''">全部博客</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li @click="changetype(1,'JavaSript')" :class="check==1?'checkStyle':''"><a href="#">JavaSript</a></li>
+                <li @click="changetype(2,'HTML')" :class="check==2?'checkStyle':''"><a href="javascript:;">HTML</a></li>
+                <li @click="changetype(3,'nodejs')" :class="check==3?'checkStyle':''"><a href="javascript:;">nodejs</a></li>
+                <li @click="changetype(4,'vuejs')" :class="check==4?'checkStyle':''"><a href="javascript:;">vuejs</a></li>
+                <li @click="changetype(5,'其他')" :class="check==5?'checkStyle':''"><a href="javascript:;">其他</a></li>
+
+            </ul>
+            <% if(!sessionLogin){ %>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/login">登录</a></li>
+                    <li><a href="/regist">注册 <span class="sr-only">(current)</span></a></li>
+                </ul>
+            <%}else{%>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/usercenter"> <span style="padding:0 3px;color: #5cb85c;font-size: 18px"><%=sessionUsername%></span> 个人中心</a></li>
+                    <li><a href="/outlogin">退出 <span class="sr-only">(current)</span></a></li>
+                </ul>
+            <%}%>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+
+<div class="container" style="margin-top: 60px">
+
+
+    <div class="jumbotron" v-for="wenzhang in wenzhanglist">
+            <!--<div  style="clear: both">-->
+                <!--<img :src="qianzui+wenzhang.zuozhe+houzui" alt="" style="margin-right: 10px;;border-radius: 50%;width: 80px;height: 80px; float: left">-->
+            <!--</div>-->
+        <div style="text-align: center">
+                <h3 class="title">{{wenzhang.title}}</h3>
+                <p>作者:<span style="margin-right: 15px;">{{wenzhang.zuozhe}}</span> 时间: <span>{{wenzhang.datetime}}</span> </p>
+        </div>
+
+
+        <div style="clear: both">
+            <p class="wenzhuang">{{wenzhang.content}}</p>
+            <div v-for="comm in wenzhang.comm">
+                <div class="pingluntouxiang">
+                    <img :src="qianzui+comm.whopinglun+houzui" alt="">
+                </div>
+                <div class="pingluncontent">
+                    <h4>{{comm.whopinglun}}</h4>
+                    <p>{{comm.pinglun}}</p>
+                    <p>{{comm.pingluntime}}</p>
+                </div>
+            </div>
+
+
+            <p style="clear: both"> <span style="cursor: pointer" @click="dianzan(wenzhang);">赞:<span style="margin-right: 15px;">{{wenzhang.zan}}</span></span>  <span style="cursor: pointer">评论: <span>{{wenzhang.comm.length}}</span></span> </p>
+
+            <p style="font-size: 0;">
+                <input type="text" v-model="pingluntext" style="width: 80%;height: 34px;vertical-align: middle;font-size: 14px;">
+                <a class="btn btn-default btn-lm" @click="pinglun" role="button" style="width: 18%">发送</a>
+            </p>
+        </div>
+    </div>
+
+
+</div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script>
+    var vm =new Vue({
+        el:'#app',
+        data:{
+            wenzhanglist:[],
+            qianzui:'/touxiang/',
+            houzui:'.jpg',
+            xianzhidianzan:false,
+            username:`<%=sessionUsername%>`,
+            check:0,
+            id:'',
+            pingluntext:''
+
+        },
+        mounted: function () {
+            var _this=this;
+            this.$nextTick(function () {
+                _this.id=window.location.href.split('=')[1];
+                 _this.getwenzhanglist();
+                //console.log(window.location.href.split('=')[1])
+
+            })
+        },
+        methods:{
+            getwenzhanglist(){
+                var _this=this;
+                axios.get('/wenzhangxuanqingbyid?id='+this.id).then(function(result){
+                    _this.wenzhanglist=result.data;
+                   // console.log( result)
+                })
+            },
+            dianzan(wenzhang,event){
+                //console.log(wenzhang._id)
+                if(this.username==''){
+                    return;
+                }
+
+                var _this=this;
+                this.xianzhidianzan=true;
+                axios.post('/dianzanwenzhang',{
+                    id:wenzhang._id,
+                    jia:1
+                }).then(function(result){
+                    if(result.data.code==1){
+                        wenzhang.zan+=1;
+                    }
+                    //console.log( result)
+                })
+            },
+            changetype(num,type){
+                this.check=num;
+                if(num==0){
+                    this.getwenzhanglist();
+                    return;
+                }
+                var _this=this;
+                axios.get('/getwenzhangbytype?type='+type).then(function(result){
+                    //console.log( result)
+                    _this.wenzhanglist=result.data;
+
+                })
+
+            },
+            pinglun(){
+                if(this.pingluntext=='' || this.username==''){
+                    return;
+                }
+                var _this=this;
+                axios.post('/pinglunbyid',{
+                    id:this.id,
+                    whopinglun:this.username,
+                    pinglun:this.pingluntext
+                }).then(function(result){
+                    if(result.data.code==1){
+                        _this.pingluntext='';
+                        _this.getwenzhanglist();
+
+                    }
+                    //console.log( result)
+                   // _this.wenzhanglist=result.data;
+
+                })
+
+            }
+        }
+    })
+</script>
+</html>
